@@ -23,16 +23,10 @@ pub fn part2() -> i32 {
         .lines()
         .map(|haystack| {
             let matches = ac.find_overlapping_iter(haystack).collect::<Vec<_>>();
-            let first = if matches.iter().nth(0).unwrap().pattern().as_usize() < 9 {
-                patterns[matches.iter().nth(0).unwrap().pattern().as_usize() + 9]
-            } else {
-                patterns[matches.iter().nth(0).unwrap().pattern().as_usize()]
-            };
-            let last = if matches.iter().last().unwrap().pattern().as_usize() < 9 {
-                patterns[matches.iter().last().unwrap().pattern().as_usize() + 9]
-            } else {
-                patterns[matches.iter().last().unwrap().pattern().as_usize()]
-            };
+            let first_index = matches.first().unwrap().pattern().as_usize();
+            let last_index = matches.last().unwrap().pattern().as_usize();
+            let first = patterns[first_index + if first_index < 9 { 9 } else { 0 }];
+            let last = patterns[last_index + if last_index < 9 { 9 } else { 0 }];
             format!("{}{}", first, last).parse::<i32>().unwrap()
         })
         .sum()
